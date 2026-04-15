@@ -1,6 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import DashBoard from "./layout/DashBoard";
+const DashBoard = lazy(() => import('./layout/DashBoard'))
 const HomePage = lazy(() => import('./home/HomePage'))
 
 function App() {
