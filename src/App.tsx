@@ -1,12 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-const DashBoard = lazy(() => import('./layout/DashBoard'))
-const HomePage = lazy(() => import('./home/HomePage'))
+const DashBoard = lazy(() => import("./layout/DashBoard"));
+const HomePage = lazy(() => import("./home/HomePage"));
 
 function App() {
-
-  const queyClient = new QueryClient()
+  const queyClient = new QueryClient();
   return (
     <QueryClientProvider client={queyClient}>
       <BrowserRouter>
@@ -21,8 +20,7 @@ function App() {
         </Suspense>
       </BrowserRouter>
     </QueryClientProvider>
-
-  )
+  );
 }
 
-export default App
+export default App;
