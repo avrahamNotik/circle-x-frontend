@@ -1,4 +1,6 @@
 import { Dayjs } from "dayjs";
+import type { HTMLInputTypeAttribute } from "react";
+import type { FieldValues, Path } from "react-hook-form";
 import { z } from "zod";
 
 export const signUpSchema = z
@@ -16,3 +18,29 @@ export const signUpSchema = z
   });
 
 export type SignUpFormType = z.infer<typeof signUpSchema>;
+
+interface formField<T extends FieldValues> {
+  label: string;
+  name: Path<T>;
+  type: HTMLInputTypeAttribute;
+  requierd: boolean;
+}
+
+export const signUpField: formField<SignUpFormType>[] = [
+  { label: "first name", name: "firstName", type: "text", requierd: true },
+  { label: "last name", name: "lastName", type: "text", requierd: true },
+  { label: "email", name: "email", type: "email", requierd: true },
+  { label: "birth day", name: "birthDay", type: "date", requierd: false },
+  {
+    label: "password",
+    name: "password",
+    type: "password",
+    requierd: true,
+  },
+  {
+    label: "confirm password",
+    name: "confirmPassword",
+    type: "password",
+    requierd: true,
+  },
+] as const;

@@ -11,7 +11,8 @@ import PopOverGeneric from "../utils/PopOverGeneric";
 import { useState } from "react";
 import useOnClickPopOver from "../utils/useOnClickPopOver";
 import DialogGeneric from "../utils/DialogGeneric";
-import IndexSignUp from "../signUp/IndexSignUp";
+import { signUpField, signUpSchema } from "../signUp/formSetting";
+import IndexForm from "../signUp/IndexForm";
 
 const IndexDashboar = () => {
   const [openLoginDialog, setOpenLoginDialog] = useState<boolean>(false);
@@ -79,7 +80,21 @@ const IndexDashboar = () => {
         open={openLoginDialog}
         onClose={() => setOpenLoginDialog(false)}
       >
-        <IndexSignUp />
+        <IndexForm
+          title="Sign up"
+          fields={signUpField}
+          onSubmit={(data) => console.log({ data })}
+          schema={signUpSchema}
+          defaultValues={{
+            birthDay: undefined,
+            confirmPassword: "",
+            email: "",
+            firstName: "",
+            lastName: "",
+            password: "",
+          }}
+          setOpenDialog={() => setOpenLoginDialog(false)}
+        />
       </DialogGeneric>
     </DashBoardStyled>
   );

@@ -42,7 +42,7 @@ const GenericFormInput = <T extends FieldValues>({
             <DatePicker
               value={field.value}
               onChange={field.onChange}
-              sx={{ width: "100%", borderRadius: "0.5rem" }}
+              sx={{ width: "48%", borderRadius: "0.5rem" }}
               label={label}
               slotProps={{
                 textField: {
@@ -60,7 +60,7 @@ const GenericFormInput = <T extends FieldValues>({
     <TextField
       required={requierd}
       color="info"
-      sx={{ width: "100%", borderRadius: "0.5rem" }}
+      sx={{ width: "48%", borderRadius: "0.5rem" }}
       type={type === "password" ? (showPassword ? "text" : "password") : type}
       {...register(name)}
       label={label}
@@ -88,8 +88,3 @@ const GenericFormInput = <T extends FieldValues>({
 };
 
 export default GenericFormInput;
-
-{
-  /* <input type={type} {...register} placeholder="email" />
-{errors && <p>{error?.message as string}</p>} */
-}
