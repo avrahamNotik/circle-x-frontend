@@ -1,34 +1,71 @@
 import { useState, type HTMLInputTypeAttribute } from "react";
-import { useFormContext, type FieldValues, type Path } from "react-hook-form";
+import {
+  Controller,
+  useFormContext,
+  type FieldValues,
+  type Path,
+} from "react-hook-form";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 interface Props<T extends FieldValues> {
-  labal: string;
+  label: string;
   name: Path<T>;
   type?: HTMLInputTypeAttribute;
+  requierd?: boolean;
 }
 const GenericFormInput = <T extends FieldValues>({
   type = "text",
   name,
-  labal,
+  label,
+  requierd = false,
 }: Props<T>) => {
   const [showPassword, setShowPassword] = useState(false);
-  console.log({ type });
 
   const {
     register,
+    control,
     formState: { errors },
   } = useFormContext<T>();
   const error = errors[name];
+  if (error) console.log({ error: error.message });
+
+  if (type === "date")
+    return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Controller
+          name={name}
+          control={control}
+          render={({ field }) => (
+            <DatePicker
+              value={field.value}
+              onChange={field.onChange}
+              sx={{ width: "100%", borderRadius: "0.5rem" }}
+              label={label}
+              slotProps={{
+                textField: {
+                  color: "info",
+                  error: !!error,
+                  helperText: error?.message as string,
+                },
+              }}
+            />
+          )}
+        />
+      </LocalizationProvider>
+    );
   return (
     <TextField
+      required={requierd}
       color="info"
       sx={{ width: "100%", borderRadius: "0.5rem" }}
       type={type === "password" ? (showPassword ? "text" : "password") : type}
       {...register(name)}
-      label={labal}
+      label={label}
       error={!!error}
-      helperText={!error ? "" : `${error?.message}`}
+      helperText={error?.message as string}
       slotProps={{
         input: {
           endAdornment: (

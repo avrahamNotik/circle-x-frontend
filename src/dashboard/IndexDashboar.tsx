@@ -57,6 +57,7 @@ const IndexDashboar = () => {
         <SoundButton />
         <DividerLine />
         <CircleConection
+          $isConected={!!player}
           aria-describedby={id}
           onClick={() =>
             player ? openDitelsForLoginUser : setOpenLoginDialog(true)
@@ -115,9 +116,9 @@ const DividerLine = styled.div`
   width: 1px;
   background: rgba(255, 255, 255, 0.1);
 `;
-const CircleConection = styled.div`
+const CircleConection = styled.div<{ $isConected: boolean }>`
   height: 2.7rem;
-  min-width: 2.7rem;
+  width: ${({ $isConected }) => ($isConected ? "2.7rem" : "8rem")};
   padding: 0 0.5rem;
   border-radius: 1.3rem;
   border: 2px solid rgb(59 130 246);

@@ -4,14 +4,19 @@ import { signUpSchema, type SignUpFormType } from "./formSetting";
 import { zodResolver } from "@hookform/resolvers/zod";
 import GenericFormInput from "./GenericFormInput";
 import { Typography } from "@mui/material";
+import GenericButton from "../utils/GenericButton";
+import { useState } from "react";
 
 const IndexSignUp = () => {
+  const [loading, setloading] = useState<boolean>(false);
   const methods = useForm<SignUpFormType>({
     resolver: zodResolver(signUpSchema),
   });
   const { handleSubmit } = methods;
   function onSubmitSignUpForm(data: SignUpFormType) {
+    setloading(true);
     console.log({ data });
+    setloading(false);
   }
   return (
     <SignUpDialog>
@@ -19,35 +24,49 @@ const IndexSignUp = () => {
       <FormProvider {...methods}>
         <Form onSubmit={handleSubmit(onSubmitSignUpForm)}>
           <GenericFormInput<SignUpFormType>
-            labal="first name"
+            label="first name"
             name="firstName"
             type="text"
+            requierd={true}
           />
           <GenericFormInput<SignUpFormType>
-            labal="last name"
+            label="last name"
             name="lastName"
             type="text"
+            requierd={true}
           />
           <GenericFormInput<SignUpFormType>
-            labal="email"
+            label="email"
             name="email"
             type="email"
+            requierd={true}
           />
           <GenericFormInput<SignUpFormType>
-            labal="birth day"
+            label="birth day"
             name="birthDay"
-            type="email"
+            type="date"
           />
           <GenericFormInput<SignUpFormType>
-            labal="password"
+            label="password"
             name="password"
             type="password"
+            requierd={true}
           />
           <GenericFormInput<SignUpFormType>
-            labal="confirm password"
+            label="confirm password"
             name="confirmPassword"
             type="password"
+            requierd={true}
           />
+          <ButtonsDiv>
+            <GenericButton
+              contant="sign in"
+              variant="outlined"
+              onClick={() => {}}
+              type="submit"
+              loading={loading}
+            />
+          </ButtonsDiv>
         </Form>
       </FormProvider>
     </SignUpDialog>
@@ -62,9 +81,9 @@ const SignUpDialog = styled.div`
   min-height: 25rem;
   min-width: 25rem;
   background: white;
-  border: 2px solide gray;
+  border: 2px solid gray;
   padding: 1rem;
-  border-radius: 0%.5rem;
+  border-radius: 0.5rem;
   > * {
     margin: 1rem 0;
   }
@@ -73,4 +92,8 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   row-gap: 1rem;
+`;
+const ButtonsDiv = styled.div`
+  display: flex;
+  gap: 1rem;
 `;
