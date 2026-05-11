@@ -31,7 +31,6 @@ const SoundButton = () => {
       <Tooltip
         title="Sound Mute"
         onClick={() => {
-          console.log("sgfasfd");
           window.umami?.track("sound-button");
         }}
       >
