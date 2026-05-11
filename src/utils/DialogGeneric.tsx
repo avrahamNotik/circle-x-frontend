@@ -9,7 +9,7 @@ interface Props {
 }
 const DialogGeneric = ({ children, open, onClose }: Props) => {
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog maxWidth={false} open={open} onClose={onClose}>
       <OutOfDialog>
         <IconButton title="cancle" onClick={onClose}>
           <X />
