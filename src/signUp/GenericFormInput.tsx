@@ -12,7 +12,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 interface Props<T extends FieldValues> {
   label: string;
-  name: Path<T>;
+  name: Extract<keyof T, string>;
   type?: HTMLInputTypeAttribute;
   requierd?: boolean;
 }
@@ -30,13 +30,12 @@ const GenericFormInput = <T extends FieldValues>({
     formState: { errors },
   } = useFormContext<T>();
   const error = errors[name];
-  if (error) console.log({ error: error.message });
 
   if (type === "date")
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Controller
-          name={name}
+          name={name as unknown as Path<T>}
           control={control}
           render={({ field }) => (
             <DatePicker
@@ -62,7 +61,7 @@ const GenericFormInput = <T extends FieldValues>({
       color="info"
       sx={{ width: "48%", borderRadius: "0.5rem" }}
       type={type === "password" ? (showPassword ? "text" : "password") : type}
-      {...register(name)}
+      {...register(name as unknown as Path<T>)}
       label={label}
       error={!!error}
       helperText={error?.message as string}

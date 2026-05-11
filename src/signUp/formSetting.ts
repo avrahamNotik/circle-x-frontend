@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
 import type { HTMLInputTypeAttribute } from "react";
-import type { FieldValues, Path } from "react-hook-form";
+import type { FieldValues } from "react-hook-form";
 import { z } from "zod";
 
 export const signUpSchema = z
@@ -19,14 +19,14 @@ export const signUpSchema = z
 
 export type SignUpFormType = z.infer<typeof signUpSchema>;
 
-interface formField<T extends FieldValues> {
+interface FormField<T extends FieldValues> {
   label: string;
-  name: Path<T>;
+  name: Extract<keyof T, string>;
   type: HTMLInputTypeAttribute;
   requierd: boolean;
 }
 
-export const signUpField: formField<SignUpFormType>[] = [
+export const signUpField: FormField<SignUpFormType>[] = [
   { label: "first name", name: "firstName", type: "text", requierd: true },
   { label: "last name", name: "lastName", type: "text", requierd: true },
   { label: "email", name: "email", type: "email", requierd: true },
@@ -44,3 +44,25 @@ export const signUpField: formField<SignUpFormType>[] = [
     requierd: true,
   },
 ] as const;
+
+export const signInSchema = z.object({
+  email: z.email("Email is not correct"),
+  password: z.string().min(8, "Password must include at least 8 chars"),
+});
+
+export type SignInFormType = z.infer<typeof signInSchema>;
+
+export const signInField: FormField<SignInFormType>[] = [
+  {
+    label: "email",
+    name: "email",
+    requierd: true,
+    type: "email",
+  },
+  {
+    label: "password",
+    name: "password",
+    requierd: true,
+    type: "password",
+  },
+];
