@@ -20,7 +20,7 @@ const IndexForm = ({ setOpenDialog }: Props) => {
   return (
     <SignUpDialog>
       <Typography variant="h5">
-        {modeSign.mode === "signUp" ? "Sign up" : "Sign in"}
+        {modeSign.mode === "signUp" ? "Sign up" : "Sign in"}ffff
       </Typography>
       {modeSign.mode === "signUp" ? (
         <GenericFormProvider
