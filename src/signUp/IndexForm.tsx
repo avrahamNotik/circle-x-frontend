@@ -65,8 +65,7 @@ const IndexForm = ({ setOpenDialog }: Props) => {
         shape="circle"
         size="large"
         width="300px"
-        context="signup"
-        text="continue_with"
+        text={modeSign.mode === "signUp" ? "signup_with" : "continue_with"}
         onSuccess={(credentialResponse) => console.log({ credentialResponse })}
         onError={() => console.log("Login faild")}
       />
@@ -81,7 +80,7 @@ const SignUpDialog = styled.div`
   text-align: center;
   color: blue;
   overflow: hidden scroll;
-  max-height: 20rem;
+  max-height: 27rem;
   max-width: 45rem;
   background: white;
   padding: 1rem 1rem;
