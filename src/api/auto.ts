@@ -1,30 +1,15 @@
-import axios from "axios";
 import type { Player } from "../utils/commonType";
+import { genericAxios } from "./genericRestApi";
 
 export async function getMe() {
   try {
-    const me = await axios.get<Player>(
-      `http://localhost:3000/players/getPlayer`,
-      {
-        withCredentials: true,
-      },
-    );
-    return me.data;
+    const me = await genericAxios<Player>("players/getPlayer", "GET");
+    return me;
   } catch {
     try {
-      const refresh = await axios.post(
-        `http://localhost:3000/auto/loginWithRefreshToken`,
-        { withCredentials: true },
-      );
-      if (refresh) {
-        const me = await axios.post<Player>(
-          `http://localhost:3000/players/getPlayer`,
-          {
-            withCredentials: true,
-          },
-        );
-        return me.data;
-      }
+      await genericAxios<Player>("players/loginWithRefreshToken", "POST");
+
+      return await genericAxios<Player>("players/getPlayer", "GET");
     } catch {
       return null;
     }
