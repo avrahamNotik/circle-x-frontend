@@ -44,7 +44,7 @@ const GenericFormProvider = <T extends FieldValues>({
   });
 
   const { handleSubmit } = methods;
-  const onSubmitForm: SubmitHandler<T> = async (data) => {
+  async function onSubmitForm(data: T) {
     setloading(true);
     await new Promise((resolve) =>
       setTimeout(() => {
@@ -54,7 +54,7 @@ const GenericFormProvider = <T extends FieldValues>({
     await onSubmit(data);
     setloading(false);
     setOpenDialog();
-  };
+  }
   return (
     <div>
       <FormProvider {...methods}>
