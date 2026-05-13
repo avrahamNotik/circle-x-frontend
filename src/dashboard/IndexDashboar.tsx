@@ -5,8 +5,7 @@ import LeftDashboard from "./LeftDashboard";
 import MiddleDashboard from "./MiddleDashboard";
 import SoundButton from "./SoundButton";
 import { useGenericQuery } from "../query/useGenericQuery";
-import { getMe } from "../api/auto";
-import { queryKeys } from "../query/kueryeKeys";
+import { getMe } from "../api/auth";
 import PopOverGeneric from "../utils/PopOverGeneric";
 import { useState } from "react";
 import useOnClickPopOver from "../utils/useOnClickPopOver";
@@ -21,7 +20,7 @@ const IndexDashboar = () => {
   });
   const openLogin = Boolean(anchorEl);
   const { data: player, isLoading } = useGenericQuery({
-    queryKey: [queryKeys.me],
+    queryKey: ["me"],
     queryFn: getMe,
   });
   const name = {

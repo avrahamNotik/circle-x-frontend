@@ -7,7 +7,7 @@ export const signUpSchema = z
   .object({
     firstName: z.string().min(2, "First name too short"),
     lastName: z.string().min(2, "Last name too short"),
-    password: z.string().min(8, "Password must include at least 8 chars"),
+    password: z.string().min(4, "Password must include at least 4 chars"),
     confirmPassword: z.string(),
     email: z.email("Email is not correct"),
     birthDay: z.custom<Dayjs>(),
@@ -47,7 +47,7 @@ export const signUpField: FormField<SignUpFormType>[] = [
 
 export const signInSchema = z.object({
   email: z.email("Email is not correct"),
-  password: z.string().min(8, "Password must include at least 8 chars"),
+  password: z.string().min(4, "Password must include at least 4 chars"),
 });
 
 export type SignInFormType = z.infer<typeof signInSchema>;

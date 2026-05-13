@@ -1,3 +1,3 @@
-export const queryKeys: Record<string, string> = {
+export const queryKeys = {
   me: "me",
 } as const;

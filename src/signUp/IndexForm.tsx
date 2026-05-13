@@ -9,6 +9,9 @@ import {
 } from "./formSetting";
 import { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import { genericAxios } from "../api/genericRestApi";
+import type { FieldValues } from "react-hook-form";
+import { useGenericMutation } from "../query/useGenericMutation";
 
 interface Props {
   setOpenDialog: () => void;
@@ -17,6 +20,20 @@ const IndexForm = ({ setOpenDialog }: Props) => {
   const [modeSign, setModeSign] = useState<Record<"mode", "signUp" | "signIn">>(
     { mode: "signUp" },
   );
+
+  const mutation = useGenericMutation({
+    mutationFn: ({ url, data }: { url: string; data: object }) =>
+      genericAxios(url, "POST", data),
+    mutationKey: ["me"],
+  });
+  function onSubmit<T extends FieldValues>(data: T) {
+    const url =
+      modeSign.mode === "signUp" ? "players/createPlayer" : "auth/login";
+    mutation.mutateAsync({
+      url,
+      data,
+    });
+  }
   return (
     <SignUpDialog>
       <Typography variant="h5">
@@ -25,7 +42,7 @@ const IndexForm = ({ setOpenDialog }: Props) => {
       {modeSign.mode === "signUp" ? (
         <GenericFormProvider
           fields={signUpField}
-          onSubmit={(data) => console.log({ data })}
+          onSubmit={onSubmit}
           schema={signUpSchema}
           defaultValues={{
             birthDay: undefined,
@@ -40,7 +57,7 @@ const IndexForm = ({ setOpenDialog }: Props) => {
       ) : (
         <GenericFormProvider
           fields={signInField}
-          onSubmit={(data) => console.log({ data })}
+          onSubmit={onSubmit}
           schema={signInSchema}
           defaultValues={{
             email: "",
@@ -80,7 +97,7 @@ const SignUpDialog = styled.div`
   text-align: center;
   color: blue;
   overflow: hidden scroll;
-  max-height: 27rem;
+  max-height: 30rem;
   max-width: 45rem;
   background: white;
   padding: 1rem 1rem;
