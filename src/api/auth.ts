@@ -7,7 +7,7 @@ export async function getMe() {
     return me;
   } catch {
     try {
-      await genericAxios<Player>("players/loginWithRefreshToken", "POST");
+      await genericAxios<Player>("auth/loginWithRefreshToken", "POST");
 
       return await genericAxios<Player>("players/getPlayer", "GET");
     } catch {
