@@ -9,7 +9,6 @@ import useOnClickPopOver from "../utils/useOnClickPopOver";
 const SoundButton = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openSound = Boolean(anchorEl);
-  const id = openSound ? "simple-popover" : undefined;
 
   const sound = useSoundStore((store) => store.volume);
   const setSound = useSoundStore((store) => store.setVolume);
@@ -23,9 +22,9 @@ const SoundButton = () => {
     trigerEvent: { eventName: "sound-button" },
   });
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
   return (
     <>
       <Tooltip
@@ -35,7 +34,6 @@ const SoundButton = () => {
         }}
       >
         <IconButton
-          aria-describedby={id}
           onClick={handleClick}
           sx={{
             background: "rgb(30 41 59)",
@@ -52,7 +50,7 @@ const SoundButton = () => {
       <PopOverGeneric
         anchorEl={anchorEl}
         open={openSound}
-        handleClose={handleClose}
+        handleClose={() => setAnchorEl(null)}
       >
         <SliderBox>
           <Slider

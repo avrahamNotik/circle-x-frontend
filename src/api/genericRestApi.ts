@@ -7,8 +7,6 @@ export async function genericAxios<T>(
   data?: object,
   withCredentials: boolean = true,
 ): Promise<T> {
-  console.log(`${import.meta.env.VITE_BASE_URL}${url}`);
-
   const res = await axios<T>(`${import.meta.env.VITE_BASE_URL}${url}`, {
     withCredentials,
     method: axiosMethod,
