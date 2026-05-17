@@ -5,16 +5,15 @@ interface Props {
   open: boolean;
   handleClose: () => void;
   anchorEl: HTMLElement | null;
-  anchorOrigin?: PopoverOrigin | undefined;
+  anchorOrigin?: PopoverOrigin;
 }
-import React from "react";
 
 const PopOverGeneric = ({
   children,
   open,
   anchorEl,
   handleClose,
-  anchorOrigin,
+  anchorOrigin = { horizontal: "center", vertical: "bottom" },
 }: Props) => {
   return (
     <Popover

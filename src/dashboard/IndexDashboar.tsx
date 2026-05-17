@@ -4,37 +4,9 @@ import { IconButton, Tooltip } from "@mui/material";
 import LeftDashboard from "./LeftDashboard";
 import MiddleDashboard from "./MiddleDashboard";
 import SoundButton from "./SoundButton";
-import { useGenericQuery } from "../query/useGenericQuery";
-import { getMe } from "../api/auto";
-import { queryKeys } from "../query/kueryeKeys";
-import PopOverGeneric from "../utils/PopOverGeneric";
-import { useState } from "react";
-import useOnClickPopOver from "../utils/useOnClickPopOver";
-import DialogGeneric from "../utils/DialogGeneric";
-import IndexSignUp from "../signUp/IndexSignUp";
+import PlayerArea from "./PlayerArea";
 
 const IndexDashboar = () => {
-  const [openLoginDialog, setOpenLoginDialog] = useState<boolean>(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { handleClick: openDitelsForLoginUser } = useOnClickPopOver({
-    setAnchorEl,
-  });
-  const openLogin = Boolean(anchorEl);
-  const { data: player, isLoading } = useGenericQuery({
-    queryKey: [queryKeys.me],
-    queryFn: getMe,
-  });
-  const name = {
-    firstName: "avraham",
-    lastName: "notik",
-  };
-
-  const id = openLogin ? "simple-popover" : undefined;
-  function shrtName(firstName: string, lastName: string) {
-    const short = firstName[0].toUpperCase() + lastName[0].toUpperCase();
-    return short;
-  }
-  if (isLoading) return <div>is loading...</div>;
   return (
     <DashBoardStyled>
       <LeftDashboard />
@@ -56,30 +28,8 @@ const IndexDashboar = () => {
         </Tooltip>
         <SoundButton />
         <DividerLine />
-        <CircleConection
-          aria-describedby={id}
-          onClick={() =>
-            player ? openDitelsForLoginUser : setOpenLoginDialog(true)
-          }
-        >
-          {player
-            ? shrtName(name.firstName, name.lastName)
-            : "Sign in/ Sign Up"}
-        </CircleConection>
+        <PlayerArea />
       </RightDashboard>
-      <PopOverGeneric
-        anchorEl={anchorEl}
-        open={openLogin}
-        handleClose={() => setAnchorEl(null)}
-      >
-        <div>UserLogin</div>
-      </PopOverGeneric>
-      <DialogGeneric
-        open={openLoginDialog}
-        onClose={() => setOpenLoginDialog(false)}
-      >
-        <IndexSignUp />
-      </DialogGeneric>
     </DashBoardStyled>
   );
 };
@@ -114,24 +64,4 @@ const DividerLine = styled.div`
   height: 2.2rem;
   width: 1px;
   background: rgba(255, 255, 255, 0.1);
-`;
-const CircleConection = styled.div`
-  height: 2.7rem;
-  min-width: 2.7rem;
-  padding: 0 0.5rem;
-  border-radius: 1.3rem;
-  border: 2px solid rgb(59 130 246);
-  display: grid;
-  place-items: center;
-  color: rgb(59 130 246);
-  cursor: pointer;
-  :hover {
-    color: rgb(37, 99, 235);
-    border-color: rgb(37, 99, 235);
-  }
-
-  :active {
-    color: rgb(29, 78, 216);
-    border-color: rgb(29, 78, 216);
-  }
 `;
