@@ -17,7 +17,7 @@ export const signUpSchema = z
     path: ["confirmPassword"],
   });
 
-export type SignUpFormType = z.infer<typeof signUpSchema>;
+export type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 interface FormField<T extends FieldValues> {
   label: string;
@@ -26,7 +26,7 @@ interface FormField<T extends FieldValues> {
   requierd: boolean;
 }
 
-export const signUpField: FormField<SignUpFormType>[] = [
+export const signUpField: FormField<SignUpFormValues>[] = [
   { label: "first name", name: "firstName", type: "text", requierd: true },
   { label: "last name", name: "lastName", type: "text", requierd: true },
   { label: "email", name: "email", type: "email", requierd: true },

@@ -13,14 +13,14 @@ const PopOverGeneric = ({
   open,
   anchorEl,
   handleClose,
-  anchorOrigin = { horizontal: "center", vertical: "bottom" },
+  // anchorOrigin = { horizontal: "center", vertical: "bottom" },
 }: Props) => {
   return (
     <Popover
       open={open}
       onClose={handleClose}
       anchorEl={anchorEl}
-      anchorOrigin={anchorOrigin}
+      // anchorOrigin={anchorOrigin}
     >
       {children}
     </Popover>

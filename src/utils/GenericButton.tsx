@@ -3,7 +3,7 @@ import type { HTMLInputTypeAttribute } from "react";
 
 interface Props {
   contant: string;
-  onClick: () => void;
+  onClick?: () => void;
   type?: HTMLInputTypeAttribute;
   color?: ButtonProps["color"];
   variant?: ButtonProps["variant"];
