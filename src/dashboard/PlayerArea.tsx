@@ -6,6 +6,8 @@ import useOnClickPopOver from "../utils/useOnClickPopOver";
 import IndexForm from "../signUp/IndexForm";
 import PopOverGeneric from "../utils/PopOverGeneric";
 import DialogGeneric from "../utils/DialogGeneric";
+import UserArea from "./UserArea";
+import { LoadingSircle } from "../utils/commonCss";
 
 const PlayerArea = () => {
   const [openLoginDialog, setOpenLoginDialog] = useState<boolean>(false);
@@ -25,7 +27,10 @@ const PlayerArea = () => {
     const short = firstName[0].toUpperCase() + lastName[0].toUpperCase();
     return short;
   }
-  if (isLoading) return <div>is loading...</div>;
+  const onClose = () => {
+    setAnchorEl(null);
+  };
+  if (isLoading) return <LoadingSircle />;
 
   return (
     <>
@@ -34,7 +39,7 @@ const PlayerArea = () => {
         onClick={player ? handleClick : () => setOpenLoginDialog(true)}
       >
         {player
-          ? shrtName(player.firstName, player.lastName)
+          ? shrtName(player.data.firstName ?? "", player.data.lastName)
           : "Sign in/ Sign Up"}
         <DialogGeneric
           open={openLoginDialog}
@@ -46,9 +51,9 @@ const PlayerArea = () => {
       <PopOverGeneric
         anchorEl={anchorEl}
         open={openLogin}
-        handleClose={() => setAnchorEl(null)}
+        handleClose={onClose}
       >
-        <div style={{ height: "10rem", width: "10rem" }}>UserLogin</div>
+        <UserArea onClose={onClose} />
       </PopOverGeneric>
     </>
   );
@@ -56,9 +61,9 @@ const PlayerArea = () => {
 
 export default PlayerArea;
 
-const CircleConection = styled.div<{ $isConected: boolean }>`
-  height: 2.7rem;
-  width: ${({ $isConected }) => ($isConected ? "2.7rem" : "8rem")};
+const CircleConection = styled.div<{ $isConected?: boolean }>`
+  height: 2rem;
+  width: ${({ $isConected }) => ($isConected ? "2.0rem" : "8rem")};
   padding: 0 0.5rem;
   border-radius: 1.3rem;
   border: 2px solid rgb(59 130 246);

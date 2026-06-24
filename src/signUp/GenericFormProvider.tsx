@@ -46,11 +46,6 @@ const GenericFormProvider = <T extends FieldValues>({
   const { handleSubmit } = methods;
   async function onSubmitForm(data: T) {
     setloading(true);
-    await new Promise((resolve) =>
-      setTimeout(() => {
-        resolve(null);
-      }, 3000),
-    );
     await onSubmit(data);
     setloading(false);
     setOpenDialog();
@@ -73,7 +68,6 @@ const GenericFormProvider = <T extends FieldValues>({
               startIcon={<SendIcon />}
               contant="sign in"
               variant="outlined"
-              onClick={() => {}}
               type="submit"
               loading={loading}
             />

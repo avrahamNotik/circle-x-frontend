@@ -6,12 +6,16 @@ import {
   signInSchema,
   signUpField,
   signUpSchema,
+  type SignUpFormValues,
 } from "./formSetting";
 import { useState } from "react";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 import { genericAxios } from "../api/genericRestApi";
 import type { FieldValues } from "react-hook-form";
 import { useGenericMutation } from "../query/useGenericMutation";
+import { toast } from "react-toastify";
+
+const AUTH = "auth";
 
 interface Props {
   setOpenDialog: () => void;
@@ -23,17 +27,53 @@ const IndexForm = ({ setOpenDialog }: Props) => {
 
   const mutation = useGenericMutation({
     mutationFn: ({ url, data }: { url: string; data: object }) =>
-      genericAxios(url, "POST", data),
+      genericAxios({ url, axiosMethod: "POST", data }),
     mutationKey: ["me"],
   });
-  function onSubmit<T extends FieldValues>(data: T) {
-    const url =
-      modeSign.mode === "signUp" ? "players/createPlayer" : "auth/login";
-    mutation.mutateAsync({
-      url,
-      data,
-    });
+  function onSubmitSignUp(data: SignUpFormValues) {
+    const url = "players/createPlayer";
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { birthDay, confirmPassword, ...rest } = data;
+    const filterData = { ...rest, ...(birthDay && birthDay) };
+    mutation
+      .mutateAsync({
+        url,
+        data: filterData,
+      })
+      .then(() => toast.success("Sign up is succussfuly"))
+      .catch((err) => {
+        console.log({ err });
+        toast.error("Sign up is faild");
+      });
   }
+
+  function onSubmitSignIn<T extends FieldValues>(data: T) {
+    const url = "auth/login";
+    mutation
+      .mutateAsync({
+        url,
+        data,
+      })
+      .then(() => toast.success("Login is succussfuly"))
+      .catch((err) => {
+        console.log({ err });
+        toast.error("Login is faild");
+      });
+  }
+
+  const googleLogin = async (credentialResponse: CredentialResponse) => {
+    const data = { googleToken: credentialResponse.credential };
+
+    await genericAxios({
+      axiosMethod: "POST",
+      url: `${AUTH}/googleLogin`,
+      data,
+    })
+      .then((d) => console.log({ d }))
+      .catch((e) => console.log({ e }))
+      .finally(() => setOpenDialog());
+  };
+
   return (
     <SignUpDialog>
       <Typography variant="h5">
@@ -42,7 +82,7 @@ const IndexForm = ({ setOpenDialog }: Props) => {
       {modeSign.mode === "signUp" ? (
         <GenericFormProvider
           fields={signUpField}
-          onSubmit={onSubmit}
+          onSubmit={onSubmitSignUp}
           schema={signUpSchema}
           defaultValues={{
             birthDay: undefined,
@@ -57,7 +97,7 @@ const IndexForm = ({ setOpenDialog }: Props) => {
       ) : (
         <GenericFormProvider
           fields={signInField}
-          onSubmit={onSubmit}
+          onSubmit={onSubmitSignIn}
           schema={signInSchema}
           defaultValues={{
             email: "",
@@ -83,8 +123,9 @@ const IndexForm = ({ setOpenDialog }: Props) => {
         size="large"
         width="300px"
         text={modeSign.mode === "signUp" ? "signup_with" : "continue_with"}
-        onSuccess={(credentialResponse) => console.log({ credentialResponse })}
+        onSuccess={googleLogin}
         onError={() => console.log("Login faild")}
+        useOneTap
       />
     </SignUpDialog>
   );
